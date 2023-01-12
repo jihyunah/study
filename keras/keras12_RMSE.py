@@ -20,9 +20,10 @@ model.add(Dense(1))
 model.compile(loss='mse', optimizer='adam', metrics=['mae'])
 model.fit(x_train, y_train, epochs=200, batch_size=1)
 
-#평가, 훈련
+#4. 평가, 예측
 loss = model.evaluate(x_test, y_test)
 print('loss:', loss)
+
 
 y_predict = model.predict(x_test)
 
@@ -39,3 +40,5 @@ def RMSE(y_test, y_predict):
 print("RMSE :", RMSE(y_test, y_predict))
 # RMSE : 3.859932729661416 --> 이걸로
 # RMSE : 3.9525555312210416
+
+
