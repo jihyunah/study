@@ -47,17 +47,16 @@ model.add(Conv2D(32, kernel_size=(3,3), activation='relu', kernel_initializer='h
 model.add(BatchNormalization())
 model.add(MaxPooling2D(pool_size=(2,2)))
 model.add(Dropout(0.25))
-model.add(Conv2D(32, kernel_size=(3,3), activation='relu', kernel_initializer='he_uniform'))
+model.add(Conv2D(64, kernel_size=(3,3), activation='relu', kernel_initializer='he_uniform'))
 model.add(BatchNormalization())
-model.add(Conv2D(32, kernel_size=(3,3), activation='relu', kernel_initializer='he_uniform'))
+model.add(Conv2D(64, kernel_size=(3,3), activation='relu', kernel_initializer='he_uniform'))
 model.add(BatchNormalization())
 model.add(MaxPooling2D(pool_size=(2,2)))
 model.add(Dropout(0.25))
 model.add(Flatten())
-model.add(Dense(100, activation='relu'))
+model.add(Dense(512, activation='relu'))
 model.add(Dropout(0.5))
 model.add(Dense(100, activation='softmax'))
-opt = SGD(lr=0.01, momentum=0.9, decay=1e-6, nesterov=True)
 
 
 
@@ -66,7 +65,7 @@ opt = SGD(lr=0.01, momentum=0.9, decay=1e-6, nesterov=True)
 
 
 #3. 컴파일, 훈련
-model.compile(loss='sparse_categorical_crossentropy', optimizer=opt, metrics=['acc'])
+model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['acc'])
 es = EarlyStopping(monitor='val_loss', mode='min', restore_best_weights=True, patience=20, verbose=1)
 
 import datetime 
@@ -87,4 +86,4 @@ results = model.evaluate(x_test, y_test)
 print('loss:', results[0])
 print('acc:', results[1])
  
-# 
+# acc: 0.4326249957084656
