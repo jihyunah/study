@@ -17,9 +17,6 @@ print(np.unique(y_train, return_counts=True))
 
 x_test, x_val, y_test, y_val = train_test_split(x_test, y_test, train_size=0.8, random_state=333)
 
-x_train = x_train.astype('float32')
-x_val = x_val.astype('float32')
-x_test = x_test.astype('float32')
 
 # 데이터 정규화(Data Regularization)
 # 이 과정을 통해서 추후 학습할 신경망이 조금 더 학습이 원할히 될 수 있게함
@@ -66,7 +63,7 @@ model.add(Dense(100, activation='softmax'))
 
 #3. 컴파일, 훈련
 model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['acc'])
-es = EarlyStopping(monitor='val_loss', mode='min', restore_best_weights=True, patience=20, verbose=1)
+es = EarlyStopping(monitor='val_loss', mode='min', restore_best_weights=True, patience=10, verbose=1)
 
 import datetime 
 date = datetime.datetime.now()
@@ -78,12 +75,12 @@ filename = '{epoch:04d}-{val_loss:.4f}.hdf5'
 mcp = ModelCheckpoint(monitor='val_loss', mode='min', save_best_only=True, verbose=1, 
                       filepath= filepath + 'k34_3_' + date + '_' + filename)
 
-model.fit(x_train, y_train, epochs=100, verbose=1, batch_size=32, validation_data=[x_val, y_val], 
+model.fit(x_train, y_train, epochs=100, verbose=3, batch_size=32, validation_data=[x_val, y_val], 
           callbacks=[es, mcp])
 
 #4. 평가, 예측
 results = model.evaluate(x_test, y_test)
 print('loss:', results[0])
 print('acc:', results[1])
- 
+
 # acc: 0.4326249957084656
