@@ -86,5 +86,5 @@ model.fit(x_train, y_train, epochs=100, verbose=1, batch_size=32, validation_dat
 results = model.evaluate(x_test, y_test)
 print('loss:', results[0])
 print('acc:', results[1])
-
+ 
 # 
