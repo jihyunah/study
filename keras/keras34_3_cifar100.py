@@ -83,4 +83,4 @@ results = model.evaluate(x_test, y_test)
 print('loss:', results[0])
 print('acc:', results[1])
 
-# acc: 0.4326249957084656
+# acc: 0.5116249918937683
