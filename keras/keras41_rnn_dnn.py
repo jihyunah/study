@@ -35,7 +35,7 @@ model.fit(x, y, epochs=200, batch_size=1)
 #4. 평가, 예측
 loss = model.evaluate(x, y)
 print('loss:', loss)
-y_pred = np.array([8, 9, 10]).reshape(1, 3, 1) # [8, 9, 10]는 (3,1)임. 
+y_pred = np.array([8, 9, 10]).reshape(3, 1) #.reshape(1, 3, 1) # [8, 9, 10]는 (3,1)임. 
 result = model.predict(y_pred)
 print('[8,9,10]의 결과 :', result)
 
