@@ -8,6 +8,7 @@
 
 import numpy as np 
 import pandas as pd
+import tensorflow as tf
 from sklearn.model_selection import train_test_split
 from tensorflow.python.keras.models import Model
 from tensorflow.python.keras.layers import Dense, Flatten, Input, Conv1D, Dropout, MaxPooling1D
@@ -59,8 +60,8 @@ y = samsung_csv['시가']
 print(y)
 print(y.shape) # (1980, )
 
-x_predict = ???
-
+x_predict = np.array([[[64400], [65000], [63900], [64600], [18154371]]])
+print(x_predict.shape) # (1, 5, 1)
 
 
 
@@ -74,15 +75,24 @@ x2_train, x2_test = train_test_split(x2_datasets, train_size=0.7, random_state=1
 print(x2_train.shape) # (1554, 5)
 print(x2_test.shape) # (666, 5)
 
-x1_train =x1_train.values
-x1_test = x1_test.values 
-x2_train = x2_train.values 
-x2_test = x2_test.values 
+
+
+x1_train = x1_train.to_numpy()
+x1_test = x1_test.to_numpy()
+x2_train = x2_train.to_numpy() 
+x2_test = x2_test.to_numpy()
 
 x1_train = x1_train.reshape(1386, 5, 1)
 x1_test = x1_test.reshape(594, 5, 1)
 x2_train = x2_train.reshape(1554, 5, 1)
 x2_test = x2_test.reshape(666, 5, 1)
+
+
+
+
+# x1_train = np.asarray(x1_train).astype(np.float32)
+# x2_train = np.asarray(x2_train).astype(np.float32)
+# y_train = np.asarray(y_train).astype(np.float32)
 
 
 #2. 모델구성
@@ -156,14 +166,19 @@ filename = '{epoch:04d}-{val_loss:.4f}.hdf5'
 mcp = ModelCheckpoint(monitor='val_loss', mode='min', save_best_only=True, verbose=1, 
                       filepath= filepath + 'k34_1_' + date + '_' + filename)
 
-hist = model.fit([x1_train, x2_train], y_train, epochs=200, batch_size=8, validation_split=0.2)
+# x1_train = np.asarray(x1_train).astype(np.float64)
+# x2_train = np.asarray(x2_train).astype(np.float64)
+# y_train = np.asarray(y_train).astype(np.float64)
+
+model.fit([x1_train, x2_train], y_train, epochs=200, batch_size=8)
 
 
 #4. 평가, 예측
 loss = model.evaluate([x1_test, x2_test], y_test)
 print('loss:', loss)
 
-result = model.predict
+result = model.predict(x_predict)
+print('1/30 삼성전자 시가 예측값:', result)
 
 # 날짜를 순서대로 변환. 
 # 여러개의 컬럼중에 5개 임의로 고를 것. 
