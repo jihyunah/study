@@ -23,7 +23,7 @@ test_datagen = ImageDataGenerator(
         # 테스트 데이터의 목적은 평가하기 위한 데이터이기 때문에 정확한 평가를 위해 증폭하지 않은 원가 데이터를 쓴다. 
 )
 
-xy_train = train_datagen.flow_from_directory('./_data/brain/train/', target_size=(100, 100), # 이렇게 하면 모든 사진이 이 사이즈로 증폭된다. 
+xy_train = train_datagen.flow_from_directory('./_data/brain/train/', target_size=(100, 100), # 이렇게 하면 test의 두 파일이 0과 1로 들어온다. # 이렇게 하면 모든 사진이 이 사이즈로 증폭된다. 
                                              batch_size=1000, # 배치 사이즈만큼씩 잘라서 훈련시킨다
                                              class_mode='binary', # 수치 
                                              color_mode='grayscale', 
@@ -35,7 +35,7 @@ xy_train = train_datagen.flow_from_directory('./_data/brain/train/', target_size
             
             # Found 160 images belonging to 2 classes.
             
-xy_test = test_datagen.flow_from_directory('./_data/brain/test/', target_size=(100, 100), # 이렇게 하면 모든 사진이 이 사이즈로 증폭된다. 
+xy_test = test_datagen.flow_from_directory('./_data/brain/test/', target_size=(100, 100), # 이렇게 하면 test의 두 파일이 0과 1로 들어온다. # 이렇게 하면 모든 사진이 이 사이즈로 증폭된다. 
                                              batch_size=1000, # 배치 사이즈만큼씩 잘라서 훈련시킨다
                                              class_mode='binary', # 수치 
                                              color_mode='grayscale', 
@@ -74,11 +74,12 @@ es = EarlyStopping(monitor='val_acc', mode='max',
 
 hist = model.fit(xy_train[0][0], xy_train[0][1], epochs=100, # 1 에포당 배치 사이즈만큼 걷는거 총 몇번 하느냐. 
                     validation_data=(xy_test[0][0], xy_test[0][1]),
-                    batch_size=10, callbacks=[es])  # x, y, batchsize가 들어가있음
+                    batch_size=10, callbacks=[es])  # x, y, batchsize가 들어가있음 
+#                     validation_split로도 나눌 수 있음. 그럼 테스트 데이터가 아니라 트레인 데이터에서 나누어지게 됨. 
 
 # fit generator 대신에 fit도 쓸 수 있다. 근데 full 배치로 잡아놓고 사용해야됨. 
 
-# hist = model.fit_generator(xy_train, steps_per_epoch=16, epochs=100, # 1 에포당 배치 사이즈만큼 걷는거 총 몇번 하느냐. 
+# hist = model.fit_generator(xy_train, steps_per_epoch=16, epochs=100, # step per epoch = train 데이터 수 나누기 배치 사이즈 
 #                     validation_data=xy_test, validation_steps=4, )  # x, y, batchsize가 들어가있음
 
 accuracy = hist.history['acc']

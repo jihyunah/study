@@ -19,7 +19,7 @@ test_datagen = ImageDataGenerator(
         # 테스트 데이터의 목적은 평가하기 위한 데이터이기 때문에 정확한 평가를 위해 증폭하지 않은 원가 데이터를 쓴다. 
 )
 
-xy_train = train_datagen.flow_from_directory('./_data/brain/train/', target_size=(200, 200), # 이렇게 하면 모든 사진이 이 사이즈로 증폭된다. 
+xy_train = train_datagen.flow_from_directory('./_data/brain/train/', target_size=(200, 200), # 이렇게 하면 test의 두 파일이 0과 1로 들어온다. # 이렇게 하면 모든 사진이 이 사이즈로 증폭된다. 
                                              batch_size=10, # 배치 사이즈만큼씩 잘라서 훈련시킨다
                                              class_mode='binary', # 수치 
                                              color_mode='grayscale', 
@@ -31,7 +31,7 @@ xy_train = train_datagen.flow_from_directory('./_data/brain/train/', target_size
             
             # Found 160 images belonging to 2 classes.
             
-xy_test = test_datagen.flow_from_directory('./_data/brain/test/', target_size=(200, 200), # 이렇게 하면 모든 사진이 이 사이즈로 증폭된다. 
+xy_test = test_datagen.flow_from_directory('./_data/brain/test/', target_size=(200, 200), # 이렇게 하면 test의 두 파일이 0과 1로 들어온다. # 이렇게 하면 모든 사진이 이 사이즈로 증폭된다. 
                                              batch_size=10, # 배치 사이즈만큼씩 잘라서 훈련시킨다
                                              class_mode='binary', # 수치 
                                              color_mode='grayscale', 
